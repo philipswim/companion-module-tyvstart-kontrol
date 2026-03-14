@@ -1,0 +1,21 @@
+{
+  "name": "tvstart-kontrol",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "type": "module",
+  "manufacturer": "philip",
+  "product": "tvstart-kontrol",
+  "shortname": "tvstart-kontrol",
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch"
+  },
+  "dependencies": {
+    "@companion-module/base": "~1.14.1"
+  },
+  "devDependencies": {
+    "@companion-module/tools": "^2.6.1",
+    "rimraf": "^6.1.2",
+    "typescript": "~5.5.3"
+  }
+}
