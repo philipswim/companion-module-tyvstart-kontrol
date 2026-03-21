@@ -55,6 +55,12 @@ export function UpdateFeedbacks(instance: MyModule) {
 				if (state === 'GREEN') return { bgcolor: config.colorGreen, color: config.colorOff }
 				if (state === 'YELLOW') return { bgcolor: config.colorYellow, color: config.colorOff }
 				if (state === 'OFF') return { bgcolor: config.colorOff, color: config.colorText }
+				if (state === 'RED Blink') {
+					if (!instance.getBlinkState()) {
+						return { bgcolor: config.colorOff, color: config.colorText }
+					}
+					return { bgcolor: config.colorRed, color: config.colorOff }
+				}
 
 				return {}
 			},
