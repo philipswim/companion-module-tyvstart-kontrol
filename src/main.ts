@@ -80,7 +80,7 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 					if (!msg.startsWith('FB:')) continue
 					const parts = msg.split(':')
 					if (parts.length >= 3) {
-						const id = parts[1].toLowerCase()
+						const id = parts[1].toLowerCase() // Sikrer at nøglen altid er små bogstaver
 						const status = parts[2].toUpperCase()
 						this.buttonStates[id] = status
 						this.checkFeedbacks('button_status')
