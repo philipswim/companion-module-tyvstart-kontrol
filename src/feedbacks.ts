@@ -39,10 +39,14 @@ export function UpdateFeedbacks(instance: MyModule) {
 
 				// 2. BLINK (Hvis forbundet)
 				if (state === 'BLINK') {
+					// START-knappen skal ikke blinke, men opføre sig som OFFICIEL (grøn/rød)
+					if (btnId === 'start') {
+						// Hvis status er BLINK, vis grøn (som officiel), ellers rød
+						return { bgcolor: config.colorGreen, color: config.colorOff }
+					}
 					if (!instance.getBlinkState()) {
 						return { bgcolor: config.colorOff, color: config.colorText }
 					}
-					
 					const isGreen = (btnId === 'officiel' || btnId === 'nst' || btnId === 'næst')
 					return { 
 						bgcolor: isGreen ? config.colorGreen : config.colorRed, 
@@ -51,6 +55,12 @@ export function UpdateFeedbacks(instance: MyModule) {
 				}
 
 				// 3. FASTE FARVER (Hentet fra config)
+				if (btnId === 'start') {
+					if (state === 'RED') return { bgcolor: config.colorRed, color: config.colorText }
+					if (state === 'GREEN') return { bgcolor: config.colorGreen, color: config.colorOff }
+					// Start har kun rød og grøn
+					return { bgcolor: config.colorOff, color: config.colorText }
+				}
 				if (state === 'RED') return { bgcolor: config.colorRed, color: config.colorText }
 				if (state === 'GREEN') return { bgcolor: config.colorGreen, color: config.colorOff }
 				if (state === 'YELLOW') return { bgcolor: config.colorYellow, color: config.colorOff }

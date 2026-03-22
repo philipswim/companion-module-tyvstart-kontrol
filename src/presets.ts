@@ -51,6 +51,7 @@ export function UpdatePresets(instance: MyModule) {
 	addPreset('System', 'preset_yes', 'YES', 'yes', 'yes')
 	addPreset('System', 'preset_no', 'NO', 'no', 'no')
 	addPreset('System', 'preset_ende', 'ENDE', 'ende', 'ende')
+	addPreset('System', 'preset_start', 'START', 'start', 'start')
 	// --- 4. SCOREBOARD ---
 	addPreset('Scoreboard', 'preset_scb_on', 'SCB ON', 'scb_on', 'scb_on')
 	addPreset('Scoreboard', 'preset_scb_off', 'SCB OFF', 'scb_off', 'scb_off')
