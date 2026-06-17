@@ -1,14 +1,14 @@
-import type { MyModule } from './main.js'
+import type MyModule from './main.js'
 
 export function UpdateVariableDefinitions(self: MyModule): void {
-	const variables = [
-		{ variableId: 'last_command', name: 'Sidste modtagne kommando' },
-		{ variableId: 'connection_status', name: 'Forbindelse status' },
-	]
+	const variables: Record<string, { name: string }> = {
+		last_command: { name: 'Sidste modtagne kommando' },
+		connection_status: { name: 'Forbindelse status' },
+	}
 
-	// Du kan også lave en variabel for hver bane, hvis du vil vise tekst-status
+	// Creates a variable for each lane using the new object format
 	for (let i = 0; i <= 9; i++) {
-		variables.push({ variableId: `status_bane${i}`, name: `Status for Bane ${i}` })
+		variables[`status_bane${i}`] = { name: `Status for Bane ${i}` }
 	}
 
 	self.setVariableDefinitions(variables)

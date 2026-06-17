@@ -5,7 +5,7 @@ export interface ModuleConfig {
 	port: number
 	blinkSpeed: number
 	connectFlash: boolean
-	// Nye farve-felter i din interface
+	// Color fields in your interface
 	colorRed: number
 	colorGreen: number
 	colorYellow: number
@@ -31,46 +31,46 @@ export function getConfigFields(): SomeCompanionConfigField[] {
 			max: 65535,
 			default: 9012,
 		},
-		// Farvevælgere til config-siden
+		// Color pickers for the configuration page
 		{
 			type: 'colorpicker',
 			id: 'colorRed',
-			label: 'Rød Farve (Alarm)',
+			label: 'Red Color (Alarm)',
 			width: 6,
 			default: combineRgb(255, 0, 0),
 		},
 		{
 			type: 'colorpicker',
 			id: 'colorGreen',
-			label: 'Grøn Farve (OK)',
+			label: 'Green Color (OK)',
 			width: 6,
 			default: combineRgb(0, 255, 0),
 		},
 		{
 			type: 'colorpicker',
 			id: 'colorYellow',
-			label: 'Gul Farve (Vent)',
+			label: 'Yellow Color (Wait)',
 			width: 6,
 			default: combineRgb(255, 255, 0),
 		},
 		{
 			type: 'colorpicker',
 			id: 'colorOff',
-			label: 'Slukket Farve',
+			label: 'Off Color',
 			width: 6,
 			default: combineRgb(0, 0, 0),
 		},
 		{
 			type: 'colorpicker',
 			id: 'colorText',
-			label: 'Standard Tekstfarve',
+			label: 'Standard Text Color',
 			width: 6,
 			default: combineRgb(255, 255, 255),
 		},
 		{
 			type: 'number',
 			id: 'blinkSpeed',
-			label: 'Blink hastighed (ms)',
+			label: 'Blink Speed (ms)',
 			width: 6,
 			min: 100,
 			max: 2000,
@@ -79,7 +79,7 @@ export function getConfigFields(): SomeCompanionConfigField[] {
 		{
 			type: 'checkbox',
 			id: 'connectFlash',
-			label: 'Flash alle knapper ved forbindelse (2 sek)',
+			label: 'Flash all buttons on connection (2 sec)',
 			width: 6,
 			default: true,
 		},

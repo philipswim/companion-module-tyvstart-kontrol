@@ -1,21 +1,21 @@
-import { MyModule } from './main.js'
+import MyModule from './main.js'
 import { CompanionAdvancedFeedbackResult, combineRgb } from '@companion-module/base'
 
 export function UpdateFeedbacks(instance: MyModule) {
 	instance.setFeedbackDefinitions({
 		button_status: {
 			type: 'advanced',
-			name: 'Knap Status Farve',
+			name: 'Button Status Color',
 			options: [{
 				type: 'textinput',
-				label: 'Bane ID (f.eks. bane1, nst, officiel)',
+				label: 'Lane ID (e.g., bane1, nst, officiel)',
 				id: 'btnId',
 				default: 'bane1',
 			}],
-			callback: (feedback): CompanionAdvancedFeedbackResult => {
-				const config = instance.config // Hent brugerens farvevalg
+			callback: (feedback: any): CompanionAdvancedFeedbackResult => {
+				const config = instance.config // Fetch user color choices
 				
-				// 0. FLASH VED FORBINDELSE (Overstyrer alt andet i 2 sekunder)
+				// 0. FLASH ON CONNECTION (Overrides everything else for 2 seconds)
 				if (instance.getIsFlashing()) {
 					return { 
 						bgcolor: combineRgb(255, 255, 255), 
@@ -26,7 +26,7 @@ export function UpdateFeedbacks(instance: MyModule) {
 				const btnId = (feedback.options.btnId as string).toLowerCase()
 				const state = instance.buttonStates[btnId]
 				
-				// 1. FORBINDELSE MISTET (Bølge-effekt)
+				// 1. CONNECTION LOST (Wave effect)
 				if (instance.getConnectedState() === false) {
 					const step = instance.getConnectionStep() % 3
 					
@@ -37,11 +37,11 @@ export function UpdateFeedbacks(instance: MyModule) {
 					return {}
 				}
 
-				// 2. BLINK (Hvis forbundet)
+				// 2. BLINK (If connected)
 				if (state === 'BLINK') {
-					// START-knappen skal ikke blinke, men opføre sig som OFFICIEL (grøn/rød)
+					// START button should not blink, but behave like OFFICIAL (green/red)
 					if (btnId === 'start') {
-						// Hvis status er BLINK, vis grøn (som officiel), ellers rød
+						// If status is BLINK, show green (like official), otherwise red
 						return { bgcolor: config.colorGreen, color: config.colorOff }
 					}
 					if (!instance.getBlinkState()) {
@@ -54,11 +54,11 @@ export function UpdateFeedbacks(instance: MyModule) {
 					}
 				}
 
-				// 3. FASTE FARVER (Hentet fra config)
+				// 3. FIXED COLORS (Fetched from config)
 				if (btnId === 'start') {
 					if (state === 'RED') return { bgcolor: config.colorRed, color: config.colorText }
 					if (state === 'GREEN') return { bgcolor: config.colorGreen, color: config.colorOff }
-					// Start har kun rød og grøn
+					// Start only has red and green
 					return { bgcolor: config.colorOff, color: config.colorText }
 				}
 				if (state === 'RED') return { bgcolor: config.colorRed, color: config.colorText }

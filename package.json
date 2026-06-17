@@ -1,21 +1,24 @@
 {
-  "name": "tvstart-kontrol",
+  "name": "tyvstart-kontrol",
   "version": "1.0.0",
-  "main": "dist/main.js",
+  "description": "Companion module for controlling the Tyvstart Kontrol WPF application via TCP",
+  "main": "src/main.js",
   "type": "module",
-  "manufacturer": "philip",
-  "product": "tvstart-kontrol",
-  "shortname": "tvstart-kontrol",
   "scripts": {
-    "build": "rimraf dist && tsc -p tsconfig.build.json",
-    "dev": "tsc -p tsconfig.build.json --watch"
+    "build": "companion-module-build",
+    "dev": "companion-module-build --watch"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com"
+  },
+  "license": "MIT",
   "dependencies": {
-    "@companion-module/base": "~1.14.1"
+    "@companion-module/base": "^3.1.0"
   },
   "devDependencies": {
-    "@companion-module/tools": "^2.6.1",
-    "rimraf": "^6.1.2",
+    "@companion-module/tools": "^3.0.1",
+    "@types/node": "^22.0.0",
     "typescript": "~5.5.3"
   }
 }

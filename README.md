@@ -1,11 +1,13 @@
-# companion-module-[replace with module name]
+# companion-module-tyvstart-kontrol
 
-See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
+This is the Bitfocus Companion module for controlling the Tyvstart Kontrol WPF application via TCP.
+
+See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE) for more details.
 
 ## Getting started
 
-Executing a `yarn` command should perform all necessary steps to develop the module, if it does not then follow the steps below.
+Executing an `npm install` command will perform all necessary steps to install dependencies for developing the module.
 
-The module can be built once with `yarn build`. This should be enough to get the module to be loadable by companion.
+The module can be built once with `npm run build`. This will compile the TypeScript source files into the distribution folder so it can be loaded by Companion.
 
-While developing the module, by using `yarn dev` the compiler will be run in watch mode to recompile the files on change.
+While developing the module, running `npm run dev` will start the compiler in watch mode to automatically recompile the files whenever changes are saved.

@@ -1,28 +1,28 @@
-import { MyModule } from './main.js'
+import  MyModule  from './main.js'
 
 export function UpdateActions(instance: MyModule) {
 	const actions: any = {}
 
-	// Funktion til at oprette en action hurtigt
+	// Helper function to quickly register an action
 	const addAction = (id: string, label: string, command: string) => {
 		actions[id] = {
 			name: label,
 			options: [],
 			callback: () => {
 				if (instance.socket) {
-					// Sender kommandoen efterfulgt af newline
+					// Sends the command followed by a newline character
 					instance.socket.send(`${command}\n`)
 				}
 			},
 		}
 	}
 
-	// Bane knapper (sender kun tallet)
+	// Lane buttons (sends the digit directly)
 	for (let i = 0; i <= 9; i++) {
 		addAction(`bane_${i}`, `Bane ${i}`, `${i}`)
 	}
 
-	// Specialtegn og Bogstaver
+	// Special Characters and Letters
 	addAction('minus', 'Minus (-)', '-')
 	addAction('plus', 'Plus (+)', 'plus')
 	addAction('f5', 'F5', 'f5')
@@ -36,7 +36,8 @@ export function UpdateActions(instance: MyModule) {
 	addAction('naest', 'Næst', 'ctrl+n')
 	addAction('scb_on', 'SCB ON', 'ctrl+insert')
 	addAction('scb_off', 'SCB OFF', 'ctrl+home')
-	addAction('ende', 'Ende', 'space') // Jeg har brugt 'space' her da du skrev 'ende' (mellemrum)
+	addAction('ende', 'Ende', 'space') // I used 'space' here because you wrote 'ende' (space)
+	addAction('start', 'Start', 'start')
 
 	instance.setActionDefinitions(actions)
 }

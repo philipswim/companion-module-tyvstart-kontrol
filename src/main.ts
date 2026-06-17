@@ -1,17 +1,17 @@
-import { InstanceBase, runEntrypoint, TCPHelper, InstanceStatus, combineRgb } from '@companion-module/base'
+import { InstanceBase, TCPHelper, InstanceStatus, combineRgb } from '@companion-module/base'
 import { ModuleConfig, getConfigFields } from './config.js'
 import { UpdateActions } from './actions.js'
 import { UpdateFeedbacks } from './feedbacks.js'
 import { UpdatePresets } from './presets.js'
 
-export class MyModule extends InstanceBase<ModuleConfig> {
+export default class MyModule extends InstanceBase<any> {
 	public socket: TCPHelper | undefined
 	public buttonStates: { [key: string]: string } = {}
 	private blinkState = false
-	private blinkTimer: NodeJS.Timeout | undefined
+	private blinkTimer: any
 	private connectionLostStep = 0
 	private isConnected = false
-	private isFlashing = false // Bruges til "Flash on Connect"
+	private isFlashing = false // Used for "Flash on Connect"
 
 	public config: ModuleConfig = { 
 		host: '127.0.0.1', 
@@ -21,14 +21,14 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 		colorYellow: combineRgb(255, 255, 0),
 		colorOff: combineRgb(0, 0, 0),
 		colorText: combineRgb(255, 255, 255),
-		blinkSpeed: 750,      // Default hastighed
-		connectFlash: true    // Default tilvalg
+		blinkSpeed: 750,      // Default speed
+		connectFlash: true    // Default option
 	}
 
 	async init(config: ModuleConfig): Promise<void> {
 		this.config = config
 		this.startBlinkTimer()
-		await this.configUpdated(config)
+		this.configUpdated(config)
 	}
 
 	async destroy() {
@@ -40,7 +40,7 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 		const oldSpeed = this.config.blinkSpeed
 		this.config = config
 		
-		// Genstart timer hvis brugeren ændrer hastigheden i config
+		// Restart timer if user changes speed in config
 		if (oldSpeed !== config.blinkSpeed) {
 			this.startBlinkTimer()
 		}
@@ -60,10 +60,17 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 		if (config && config.host) {
 			this.socket = new TCPHelper(config.host, config.port)
 
-			this.socket.on('status_change', (status, message) => {
+			// CATCH NETWORK ERRORS: Ensures the module survives if the WPF app is closed
+			;(this.socket as any).on('error', (err: any) => {
+				this.updateStatus(InstanceStatus.ConnectionFailure, err.message || 'Connection refused')
+				this.isConnected = false
+				this.checkFeedbacks('button_status')
+			})
+
+			;(this.socket as any).on('status_change', (status: InstanceStatus, message?: string) => {
 				this.updateStatus(status, message)
 				
-				// Tjek om vi lige er gået online
+				// Check if we just went online
 				if (!this.isConnected && status === InstanceStatus.Ok && this.config.connectFlash) {
 					this.triggerConnectFlash()
 				}
@@ -72,7 +79,7 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 				this.checkFeedbacks('button_status')
 			})
 
-			this.socket.on('data', (data) => {
+			;(this.socket as any).on('data', (data: Buffer) => {
 				const rawData = data.toString().replace(/[^\x20-\x7E\n]/g, '')
 				const lines = rawData.split('\n')
 				for (let line of lines) {
@@ -80,7 +87,7 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 					if (!msg.startsWith('FB:')) continue
 					const parts = msg.split(':')
 					if (parts.length >= 3) {
-						const id = parts[1].toLowerCase() // Sikrer at nøglen altid er små bogstaver
+						const id = parts[1].toLowerCase() // Your working logic for lowercase
 						const status = parts[2].toUpperCase()
 						this.buttonStates[id] = status
 						this.checkFeedbacks('button_status')
@@ -90,7 +97,7 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 		}
 	}
 
-	// Funktion til at køre 2-sekunders flash
+	// Function to run 2-second flash
 	private triggerConnectFlash() {
 		this.isFlashing = true
 		this.checkFeedbacks('button_status')
@@ -108,7 +115,7 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 	private startBlinkTimer() {
 		if (this.blinkTimer) clearInterval(this.blinkTimer)
 		
-		// Brug hastighed fra config, ellers standard 750ms
+		// Use speed from config, otherwise default 750ms
 		const interval = this.config.blinkSpeed || 750
 		
 		this.blinkTimer = setInterval(() => {
@@ -119,8 +126,8 @@ export class MyModule extends InstanceBase<ModuleConfig> {
 	}
 
 	getConfigFields() { return getConfigFields() }
-	updateActions() { UpdateActions(this) }
-	updateFeedbacks() { UpdateFeedbacks(this) }
-	updatePresets() { UpdatePresets(this) }
+updateActions() { UpdateActions(this as any) }
+updateFeedbacks() { UpdateFeedbacks(this as any) }
+updatePresets() { UpdatePresets(this as any) }
+
 }
-runEntrypoint(MyModule, [])

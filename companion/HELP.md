@@ -1,46 +1,46 @@
-# Tyvstart Kontrol - Bitfocus Companion Modul
+# Tyvstart Kontrol - Bitfocus Companion Module
 
-Dette modul muliggør styring og status-feedback fra en specialbygget WPF-applikation til tyvstartskontrol via TCP-protokollen.
+This module enables control and status feedback from a custom WPF application for false start control using the TCP protocol.
 
-## Konfiguration
+## Configuration
 
-For at få modulet til at virke, skal du indstille følgende i Companion:
+To configure the module, enter the following settings in Companion:
 
-1.  **WPF App IP:** Indtast IP-adressen på den computer, hvor WPF-appen kører (typisk `127.0.0.1` hvis det er på samme maskine).
-2.  **Port:** Standardporten er `9012` (skal matche indstillingen i din WPF-app).
-3.  **Farver:** Du kan frit vælge hvilke farver knapperne skal have ved status RØD, GRØN, GUL og BLINK.
-4.  **Blink hastighed:** Juster hvor hurtigt knapperne skal blinke (i millisekunder).
-5.  **Connect Flash:** Hvis aktiveret, vil alle knapper lyse hvidt i 2 sekunder, når forbindelsen til appen oprettes.
+1. **WPF App IP:** Enter the IP address of the computer running the WPF application (typically `127.0.0.1` if running on the same machine).
+2. **Port:** The default port is `9012` (must match the port configuration in your WPF app).
+3. **Colors:** Customize the button colors for the states RED, GREEN, YELLOW, and BLINK.
+4. **Blink Speed:** Adjust the button flashing frequency (in milliseconds).
+5. **Connect Flash:** When enabled, all buttons will flash white for 2 seconds upon establishing a successful connection.
 
-## TCP Protokol (For Udviklere)
+## TCP Protocol (For Developers)
 
-Modulet kommunikerer via rå TCP-strenge afsluttet med en Newline (`\n`).
+The module communicates via raw TCP strings terminated by a newline character (`\n`).
 
-### Udgående kommandoer (Fra Companion til App)
-Når du trykker på en knap, sender modulet følgende strenge:
+### Outbound Commands (From Companion to App)
+Pressing a button triggers the module to send the following strings:
 
-*   **Baner 0-9:** Sender tallet direkte (f.eks. `1\n`)
-*   **Kontrol:** `official\n`, `nst\n`, `s\n` (DNS), `D\n` (DSQ)
-*   **System:** `f5\n`, `backup\n`, `+\n`, `-\n`, `Y\n` (Yes), `N\n` (No)
-*   **Scoreboard:** `ctrl+insert\n` (ON), `ctrl+home\n` (OFF)
-*   **Andet:** `U\n`, ` \n` (Space/Ende)
+* **Lanes 0-9:** Sends the digit directly (e.g., `1\n`)
+* **Control:** `official\n`, `nst\n`, `s\n` (DNS), `D\n` (DSQ)
+* **System:** `f5\n`, `backup\n`, `+\n`, `-\n`, `Y\n` (Yes), `N\n` (No)
+* **Scoreboard:** `ctrl+insert\n` (ON), `ctrl+home\n` (OFF)
+* **Other:** `U\n`, ` \n` (Space/End)
 
-### Indgående feedback (Fra App til Companion)
-Appen skal sende statusopdateringer i følgende format for at knapperne skifter farve:
+### Inbound Feedback (From App to Companion)
+The application must send status updates using the following format to trigger button state changes:
 `FB:[ID]:[STATUS]\n`
 
-**Eksempler:**
-*   `FB:bane1:RED` (Gør Bane 1 knappen rød)
-*   `FB:nst:BLINK` (Får Næste-knappen til at blinke)
-*   `FB:officiel:GREEN` (Gør Officiel-knappen grøn)
+**Examples:**
+* `FB:bane1:RED` (Changes Lane 1 button to red)
+* `FB:nst:BLINK` (Causes the Next button to blink)
+* `FB:officiel:GREEN` (Changes Official button to green)
 
-**Understøttede statusser:** `RED`, `GREEN`, `YELLOW`, `BLINK`, `OFF`.
+**Supported States:** `RED`, `GREEN`, `YELLOW`, `BLINK`, `OFF`.
 
 ## Presets
-Modulet indeholder færdige **Presets** opdelt i kategorierne:
-*   **Baner:** Knapper for bane 0 til 9.
-*   **Kontrol:** Dommer- og official-funktioner.
-*   **System:** Navigation og bekræftelse.
-*   **Scoreboard:** Tænd/sluk for scoreboard.
+The module includes ready-to-use **Presets** categorized into:
+* **Lanes:** Buttons for lanes 0 through 9.
+* **Control:** Judge and official functions.
+* **System:** Navigation and confirmation keys.
+* **Scoreboard:** Scoreboard power toggle.
 
-Træk blot en preset over på dit Stream Deck, og den er automatisk sat op med den rigtige tekst, handling og farve-feedback.
+Simply drag and drop a preset onto your Stream Deck. It comes pre-configured with the correct labels, actions, and color feedbacks.
